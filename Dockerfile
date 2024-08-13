@@ -1,12 +1,10 @@
 FROM ubuntu:latest
 
 RUN apt-get update \
-  && apt-get install -y python3-pip python3-dev libpq-dev unixodbc-dev tzdata \
+  && apt-get install -y python3-pip python3-dev libpq-dev unixodbc-dev \
   && cd /usr/local/bin \
   && ln -s /usr/bin/python3 python \
   && pip3 install --upgrade pip
-  
-ENV TZ="America/New York"
 
 COPY ./requirements.txt /data/requirements.txt
 COPY ./main.py /data/main.py
