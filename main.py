@@ -26,24 +26,25 @@ def get_jobs():
 
 def send_email():
     jobs = get_jobs()
-    host = 'smtp.office365.com'
-    conn = smtplib.SMTP(host, 587)
-    conn.starttls()
-    user = os.getenv("EMAIL")
-    pwd = os.getenv("PASS")
-    msg = MIMEMultipart()
-    msg['From'] = user
-    msg['To'] = user
-    msg['Subject'] = 'Accuweather Jobs'
-    message = "\n".join(jobs)
-    msg.attach(MIMEText(message))
-    context = ssl.create_default_context()
-    with smtplib.SMTP(host, 587) as server:
-        server.ehlo()
-        server.starttls(context=context)
-        server.ehlo() 
-        server.login(user, pwd)
-        server.sendmail(user, user, msg.as_string())
+    if jobs:
+        host = 'smtp.office365.com'
+        conn = smtplib.SMTP(host, 587)
+        conn.starttls()
+        user = os.getenv("EMAIL")
+        pwd = os.getenv("PASS")
+        msg = MIMEMultipart()
+        msg['From'] = user
+        msg['To'] = user
+        msg['Subject'] = 'Accuweather Jobs'
+        message = "\n".join(jobs)
+        msg.attach(MIMEText(message))
+        context = ssl.create_default_context()
+        with smtplib.SMTP(host, 587) as server:
+            server.ehlo()
+            server.starttls(context=context)
+            server.ehlo() 
+            server.login(user, pwd)
+            server.sendmail(user, user, msg.as_string())
 
 
 if __name__ == "__main__":
