@@ -6,11 +6,11 @@ RUN apt-get update \
   && ln -s /usr/bin/python3 python \
   && pip3 install --upgrade pip
 
-  COPY ./requirements.txt /data/requirements.txt
-  COPY ./main.py /data/main.py
-  COPY ./config.json /data/config.json
+COPY ./requirements.txt /data/requirements.txt
+COPY ./main.py /data/main.py
+COPY ./config.json /data/config.json
 
-  WORKDIR /data
+WORKDIR /data
 
 RUN python3 -m pip install --upgrade pip
 RUN python3 -m pip install -r requirements.txt
