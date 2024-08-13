@@ -6,6 +6,7 @@ COPY ./config.json /data/config.json
 
 WORKDIR /data
 
+RUN python -m pip install --upgrade pip
 RUN python -m pip install -r requirements.txt
 
 CMD ["python", "-u", "main.py"]
