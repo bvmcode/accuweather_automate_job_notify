@@ -48,6 +48,6 @@ def send_email():
 
 
 if __name__ == "__main__":
-    scheduler = BlockingScheduler()
-    scheduler.add_job(send_email, 'cron', minute='0', hour=config["exec_hour"], day='*', year='*', month='*')
+    scheduler = BlockingScheduler(timezone='US/Eastern')
+    scheduler.add_job(send_email, 'cron', minute='10', hour=config["exec_hour"], day='*', year='*', month='*')
     scheduler.start()
