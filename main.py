@@ -48,5 +48,5 @@ def send_email():
 
 if __name__ == "__main__":
     scheduler = BlockingScheduler()
-    scheduler.add_job(send_email, 'cron', minute='0', hour=config["hour_for_email"], day='*', year='*', month='*')
+    scheduler.add_job(send_email, 'cron', minute='0', hour=config["utc_hour"], day='*', year='*', month='*')
     scheduler.start()
