@@ -1,15 +1,17 @@
 import json
+import os
 import requests
 import smtplib, ssl
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from apscheduler.schedulers.blocking import BlockingScheduler
 from bs4 import BeautifulSoup
-from dotenv import dotenv_values
+
+
+with open("config.json", "r") as f:
+    config = json.loads(f.read())
 
 def get_jobs():
-    with open("config.json", "r") as f:
-        config = json.loads(f.read())
     resp = requests.get(config["accuweather_url"])
     soup = BeautifulSoup(resp.text, 'html.parser')
     title_words = config["job_titles"]
@@ -23,13 +25,12 @@ def get_jobs():
 
 
 def send_email():
-    creds = dict(dotenv_values(".env"))
     jobs = get_jobs()
     host = 'smtp.office365.com'
     conn = smtplib.SMTP(host, 587)
     conn.starttls()
-    user = creds["EMAIL"]
-    pwd = creds["PASS"]
+    user = os.getenv("EMAIL")
+    pwd = os.getenv("PASS")
     msg = MIMEMultipart()
     msg['From'] = user
     msg['To'] = user
@@ -38,14 +39,14 @@ def send_email():
     msg.attach(MIMEText(message))
     context = ssl.create_default_context()
     with smtplib.SMTP(host, 587) as server:
-        server.ehlo()  # Can be omitted
+        server.ehlo()
         server.starttls(context=context)
-        server.ehlo()  # Can be omitted
+        server.ehlo() 
         server.login(user, pwd)
         server.sendmail(user, user, msg.as_string())
 
 
 if __name__ == "__main__":
     scheduler = BlockingScheduler()
-    scheduler.add_job(send_email, 'cron', minute='0', hour='16', day='*', year='*', month='*')
+    scheduler.add_job(send_email, 'cron', minute='0', hour=config["hour_for_email"], day='*', year='*', month='*')
     scheduler.start()

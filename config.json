@@ -1,4 +1,5 @@
 {
     "job_titles": ["engineer", "analyst", "data scientist", "developer", "programmer"],
-    "accuweather_url": "https://corporate.accuweather.com/company/careers/#openings"
+    "accuweather_url": "https://corporate.accuweather.com/company/careers/#openings",
+    "utc_hour": 21
 }
